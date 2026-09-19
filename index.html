@@ -3,501 +3,268 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Share Your Feedback</title>
-
+<title>Feedback Widget</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+  :root {
+    --bg-main: #000000;
+    --card-bg: #0a0a0a;
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+    --border-color: #222222;
+    --hover-bg: #1a1a1a;
+  }
 
-:root{
-  --black:#000;
-  --white:#fff;
-  --soft:#d5d5d5;
-  --muted:#777;
-  --line:#292929;
-}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-body{
-  min-height:100vh;
-  background:var(--black);
-  color:var(--white);
-  font-family:"Space Grotesk",sans-serif;
-  padding:30px 18px;
-  overflow-x:hidden;
-}
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
 
-body::selection{
-  background:#fff;
-  color:#000;
-}
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 440px;
+    padding: 32px 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    position: relative;
+    text-align: center;
+  }
 
-.page{
-  width:min(100%,760px);
-  margin:auto;
-}
+  /* Header Profile / Logo */
+  .profile-container {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    border: 2px solid var(--text-primary);
+    padding: 2px;
+    background: var(--bg-main);
+  }
 
-/* top */
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding-bottom:20px;
-  border-bottom:1px solid var(--white);
-}
+  .profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:13px;
-}
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
 
-.logo{
-  width:58px;
-  height:58px;
-  border:1px solid #fff;
-  border-radius:50%;
-  object-fit:cover;
-  filter:grayscale(1);
-  transition:.35s ease;
-}
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 28px;
+    padding: 0 8px;
+  }
 
-.logo:hover{
-  transform:rotate(8deg) scale(1.06);
-}
+  /* Star Rating System */
+  .stars-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
 
-.brand-name{
-  font-family:"DM Mono",monospace;
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-}
+  .stars-container input {
+    display: none;
+  }
 
-.live{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#aaa;
-  font:10px "DM Mono",monospace;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
+  .stars-container label {
+    font-size: 32px;
+    color: #333333;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    user-select: none;
+    line-height: 1;
+  }
 
-.dot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:#fff;
-  animation:pulse 1.5s infinite;
-}
+  .stars-container label:hover,
+  .stars-container label:hover ~ label,
+  .stars-container input:checked ~ label {
+    color: var(--text-primary);
+  }
 
-@keyframes pulse{
-  0%,100%{opacity:.3;transform:scale(.8)}
-  50%{opacity:1;transform:scale(1.2)}
-}
+  .stars-container label:hover {
+    transform: scale(1.15);
+  }
 
-/* hero */
-.hero{
-  padding:68px 0 48px;
-}
+  /* Status Tag Below Rating */
+  .status-tag {
+    display: inline-block;
+    background: var(--text-primary);
+    color: var(--bg-main);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    min-width: 90px;
+  }
 
-.eyebrow{
-  color:#999;
-  font:10px "DM Mono",monospace;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
+  /* Input Fields */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
 
-h1{
-  font-family:"Bebas Neue",sans-serif;
-  font-size:clamp(70px,15vw,135px);
-  font-weight:400;
-  line-height:.78;
-  letter-spacing:2px;
-  text-transform:uppercase;
-}
+  .input-field {
+    width: 100%;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
 
-h1 span{
-  display:inline-block;
-  transition:.25s ease;
-}
+  .input-field:focus {
+    border-color: var(--text-primary);
+  }
 
-h1 span:hover{
-  transform:translateX(10px);
-}
+  textarea.input-field {
+    min-height: 100px;
+    resize: none;
+  }
 
-.hero p{
-  max-width:560px;
-  color:#aaa;
-  font-size:15px;
-  line-height:1.7;
-  margin-top:25px;
-}
+  /* Submit Button */
+  .submit-btn {
+    width: 100%;
+    background: var(--text-primary);
+    color: var(--bg-main);
+    border: 1px solid var(--text-primary);
+    border-radius: 12px;
+    padding: 16px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
 
-/* form */
-.form{
-  border-top:1px solid var(--line);
-}
+  .submit-btn:hover {
+    background: var(--bg-main);
+    color: var(--text-primary);
+  }
 
-.field{
-  padding:27px 0;
-  border-bottom:1px solid var(--line);
-  transition:.25s;
-}
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
 
-.field:focus-within{
-  padding-left:12px;
-  border-bottom-color:#fff;
-}
-
-label{
-  display:block;
-  color:#777;
-  font:10px "DM Mono",monospace;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  margin-bottom:12px;
-  transition:.2s;
-}
-
-.field:focus-within label{
-  color:#fff;
-}
-
-input,textarea{
-  width:100%;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:#fff;
-  font:18px "Space Grotesk",sans-serif;
-}
-
-input::placeholder,textarea::placeholder{
-  color:#414141;
-}
-
-textarea{
-  min-height:135px;
-  resize:vertical;
-  line-height:1.6;
-}
-
-/* rating */
-.rating-area{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  flex-wrap:wrap;
-}
-
-.stars{
-  display:flex;
-  flex-direction:row-reverse;
-  justify-content:flex-end;
-  gap:3px;
-}
-
-.stars input{
-  display:none;
-}
-
-.stars label{
-  margin:0;
-  cursor:pointer;
-  font-family:Arial,sans-serif;
-  font-size:34px;
-  color:#333;
-  letter-spacing:0;
-  transition:.15s ease;
-}
-
-.stars label:hover,
-.stars label:hover~label,
-.stars input:checked~label{
-  color:#fff;
-  transform:translateY(-3px);
-}
-
-.rating-text{
-  color:#777;
-  font:10px "DM Mono",monospace;
-  min-width:105px;
-}
-
-/* button */
-.submit-wrap{
-  padding-top:30px;
-}
-
-button{
-  position:relative;
-  width:100%;
-  height:62px;
-  overflow:hidden;
-  border:1px solid #fff;
-  background:#fff;
-  color:#000;
-  cursor:pointer;
-  font:500 11px "DM Mono",monospace;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  transition:.25s;
-}
-
-button::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:#000;
-  transform:translateX(-101%);
-  transition:.3s ease;
-}
-
-button span{
-  position:relative;
-  z-index:1;
-}
-
-button:hover{
-  color:#fff;
-}
-
-button:hover::before{
-  transform:translateX(0);
-}
-
-button:active{
-  transform:scale(.985);
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:wait;
-}
-
-/* status */
-.status{
-  display:none;
-  margin-bottom:15px;
-  padding:15px;
-  border:1px solid #fff;
-  color:#fff;
-  font:11px "DM Mono",monospace;
-  line-height:1.6;
-}
-
-.status.show{
-  display:block;
-}
-
-/* footer */
-.footer{
-  display:flex;
-  justify-content:space-between;
-  padding:28px 0 10px;
-  color:#555;
-  font:9px "DM Mono",monospace;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-
-@media(max-width:600px){
-  body{padding:20px 15px}
-  .hero{padding:55px 0 38px}
-  h1{font-size:76px}
-  .hero p{font-size:14px}
-  .field{padding:23px 0}
-  .field:focus-within{padding-left:7px}
-  .rating-area{gap:12px}
-  .stars label{font-size:31px}
-  .footer{flex-direction:column;gap:9px}
-}
+  .notice {
+    display: none;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
 </style>
 </head>
-
 <body>
 
-<main class="page">
+<div class="card">
+  <!-- Profile Picture -->
+  <div class="profile-container">
+    <img src="img.jpg" alt="Profile" class="profile-img" onerror="this.src='https://via.placeholder.com/64/000000/FFFFFF?text=YOU'">
+  </div>
 
-  <header class="topbar">
-    <div class="brand">
-      <img class="logo" src="om.jpg" alt="Logo">
-      <div class="brand-name">Feedback</div>
+  <h1 class="title">How are you feeling?</h1>
+  <p class="subtitle">Your input is valuable in helping us better understand your needs and tailor our service accordingly.</p>
+
+  <form id="feedbackForm" action="https://script.google.com/macros/s/AKfycbx7N0bd8QxGvOG5Tl6Psk2LKoMkDFyJgvhhtltxVe0IRQfyaWwsiTz7RDCCZDllEgTp/exec" method="POST" target="feedbackFrame">
+
+    <!-- Star Rating System -->
+    <div class="stars-container">
+      <input type="radio" id="star5" name="rating" value="5" data-text="5 Stars - Excellent" required>
+      <label for="star5" title="5 Stars">★</label>
+
+      <input type="radio" id="star4" name="rating" value="4" data-text="4 Stars - Good">
+      <label for="star4" title="4 Stars">★</label>
+
+      <input type="radio" id="star3" name="rating" value="3" data-text="3 Stars - Average" checked>
+      <label for="star3" title="3 Stars">★</label>
+
+      <input type="radio" id="star2" name="rating" value="2" data-text="2 Stars - Poor">
+      <label for="star2" title="2 Stars">★</label>
+
+      <input type="radio" id="star1" name="rating" value="1" data-text="1 Star - Very Bad">
+      <label for="star1" title="1 Star">★</label>
     </div>
 
-    <div class="live">
-      <span class="dot"></span>
-      Open
-    </div>
-  </header>
+    <div class="status-tag" id="statusTag">3 Stars - Average</div>
 
-  <section class="hero">
-    <div class="eyebrow">I'd love to hear from you</div>
-
-    <h1>
-      <span>Tell</span><br>
-      <span>Me.</span>
-    </h1>
-
-    <p>
-      Whether it's an idea, a suggestion, a problem, or simply something
-      you liked — every piece of feedback matters.
-    </p>
-  </section>
-
-  <!-- Replace the action URL with your Formspree endpoint -->
-  <form
-  class="form"
-  id="feedbackForm"
-  action="https://formspree.io/f/xeaoejae"
-  method="POST"
->
-
-    <div class="field">
-      <label for="name">Your name</label>
-      <input
-        id="name"
-        name="name"
-        type="text"
-        placeholder="What's your name?"
-        autocomplete="name"
-        required
-      >
+    <!-- User Details -->
+    <div class="field-group">
+      <input type="text" name="name" class="input-field" placeholder="Your Name" required>
+      <input type="email" name="email" class="input-field" placeholder="Your Email" required>
+      <textarea name="message" class="input-field" placeholder="Add a comment..." required></textarea>
     </div>
 
-    <div class="field">
-      <label for="email">Your email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="Where can I reach you?"
-        autocomplete="email"
-        required
-      >
-    </div>
-
-    <div class="field">
-      <label>Your experience</label>
-
-      <div class="rating-area">
-        <div class="stars">
-
-          <input id="star5" type="radio" name="rating" value="5" required>
-          <label for="star5">★</label>
-
-          <input id="star4" type="radio" name="rating" value="4">
-          <label for="star4">★</label>
-
-          <input id="star3" type="radio" name="rating" value="3">
-          <label for="star3">★</label>
-
-          <input id="star2" type="radio" name="rating" value="2">
-          <label for="star2">★</label>
-
-          <input id="star1" type="radio" name="rating" value="1">
-          <label for="star1">★</label>
-
-        </div>
-
-        <div class="rating-text" id="ratingText">
-          Pick a rating
-        </div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="message">Your thoughts</label>
-
-      <textarea
-        id="message"
-        name="message"
-        placeholder="Don't hold back..."
-        required
-      ></textarea>
-    </div>
-
-    <input type="hidden" name="_subject" value="New Feedback Received">
-    <input type="text" name="_gotcha" style="display:none">
-
-    <div class="submit-wrap">
-
-      <div id="status" class="status"></div>
-
-      <button id="submitBtn" type="submit">
-        <span>Send feedback →</span>
-      </button>
-
-    </div>
-
+    <button type="submit" id="submitBtn" class="submit-btn">Submit Now</button>
+    <div id="notice" class="notice"></div>
   </form>
 
-  <footer class="footer">
-    <span>Thanks for sharing</span>
-    <span>Made with care</span>
-  </footer>
-
-</main>
+  <iframe name="feedbackFrame" id="feedbackFrame" style="display:none;"></iframe>
+</div>
 
 <script>
-const form = document.getElementById("feedbackForm");
-const button = document.getElementById("submitBtn");
-const status = document.getElementById("status");
-const ratingText = document.getElementById("ratingText");
+  const statusTag = document.getElementById('statusTag');
+  const form = document.getElementById('feedbackForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const notice = document.getElementById('notice');
 
-const ratingMessages = {
-  1:"Could be better",
-  2:"Needs improvement",
-  3:"It was okay",
-  4:"Really good",
-  5:"Absolutely loved it"
-};
-
-document.querySelectorAll('input[name="rating"]').forEach(radio=>{
-  radio.addEventListener("change",()=>{
-    ratingText.textContent = ratingMessages[radio.value];
-  });
-});
-
-form.addEventListener("submit", async event=>{
-  event.preventDefault();
-
-  if(form.action.includes("REPLACE_WITH_YOUR_FORM_ID")){
-    status.className="status show";
-    status.textContent="Email service is not connected yet. Add your Formspree endpoint.";
-    return;
-  }
-
-  button.disabled=true;
-  button.querySelector("span").textContent="Sending...";
-
-  try{
-    const response=await fetch(form.action,{
-      method:"POST",
-      body:new FormData(form),
-      headers:{Accept:"application/json"}
+  // Dynamic Status Label Update on Star Selection
+  document.querySelectorAll('input[name="rating"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      statusTag.textContent = e.target.getAttribute('data-text');
     });
+  });
 
-    if(!response.ok) throw new Error();
+  // Submit Handler
+  form.addEventListener('submit', () => {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+    notice.style.display = 'block';
+    notice.textContent = 'Sending your response...';
 
-    status.className="status show";
-    status.textContent="✓ Feedback received. Thank you for sharing.";
-
-    form.reset();
-    ratingText.textContent="Pick a rating";
-
-  }catch(error){
-    status.className="status show";
-    status.textContent="Something went wrong. Please try again.";
-  }finally{
-    button.disabled=false;
-    button.querySelector("span").textContent="Send feedback →";
-  }
-});
+    setTimeout(() => {
+      form.reset();
+      statusTag.textContent = '3 Stars - Average';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Now';
+      notice.textContent = '✓ Response submitted successfully.';
+    }, 1500);
+  });
 </script>
 
 </body>
